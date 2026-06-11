@@ -92,3 +92,4 @@ controller, service, repository, entity, dto, config, exception
 - Created food_ordering_db database
 - Created category table with AUTO_INCREMENT
 - Inserted 4 category records
+## PLEASE ADD OTHER STRUCRTURES
