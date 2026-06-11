@@ -1,0 +1,40 @@
+package food_ordering_system.controller;
+
+import food_ordering_system.dto.CategoryDto;
+import food_ordering_system.service.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ * CategoryController handles all incoming HTTP requests
+ * related to the Category resource.
+ * It acts as the entry point of the application from outside.
+ * The controller receives requests, calls the service layer,
+ * and returns the response to the client.
+ *
+ * @RestController combines @Controller and @ResponseBody
+ * @RequestMapping defines the base URL for all endpoints
+ */
+@RestController
+@RequestMapping("/api/category")
+public class CategoryController {
+
+    /**
+     * Injects the CategoryService to handle business logic.
+     * Spring automatically provides the implementation.
+     */
+    @Autowired
+    private CategoryService categoryService;
+
+    /**
+     * GET /api/category
+     * Retrieves all categories from the database.
+     * @return a list of CategoryDto objects in JSON format
+     */
+    @GetMapping
+    public List<CategoryDto> getAllCategories() {
+        return categoryService.getAllCategories();
+    }
+}
