@@ -33,3 +33,7 @@ Returns clean error messages instead of crashes.
 ## Database
 Database: food_ordering_db
 Table: category
+
+## Project Structure
+All packages are located under food_ordering_system:
+controller, service, repository, entity, dto, config, exception
