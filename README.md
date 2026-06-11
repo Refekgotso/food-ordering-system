@@ -29,3 +29,7 @@ Examples include database and security configurations.
 ### exception
 Handles errors and custom exceptions in one place.
 Returns clean error messages instead of crashes.
+
+## Database
+Database: food_ordering_db
+Table: category
