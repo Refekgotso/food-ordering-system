@@ -37,3 +37,9 @@ Table: category
 ## Project Structure
 All packages are located under food_ordering_system:
 controller, service, repository, entity, dto, config, exception
+
+## Research Questions Completed
+- Researched and documented all package purposes
+- Created food_ordering_db database
+- Created category table with AUTO_INCREMENT
+- Inserted 4 category records
