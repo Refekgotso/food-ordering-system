@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class CategoryController {
     public List<CategoryDto> getAllCategories() {
         return categoryService.getAllCategories();
     }
+
     /**
      * GET /api/category/{id}
      * Retrieves a single category by its id.
@@ -51,9 +53,12 @@ public class CategoryController {
     /**
      * POST /api/category
      * Creates a new category.
+     * @Valid triggers Jakarta Bean Validation on the incoming dto
+     * (checks @NotBlank and @Size rules defined in CategoryDto).
+     * If validation fails, Spring automatically returns a 400 Bad Request.
      */
     @PostMapping
-    public ResponseEntity<CategoryDto> addCategory(@RequestBody CategoryDto dto) {
+    public ResponseEntity<CategoryDto> addCategory(@RequestBody @Valid CategoryDto dto) {
         CategoryDto created = categoryService.addCategory(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
