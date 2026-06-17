@@ -5,6 +5,7 @@ import food_ordering_system.entity.Category;
 import food_ordering_system.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import food_ordering_system.exception.CategoryNotFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,4 +42,20 @@ public class CategoryServiceImpl implements CategoryService {
             return dto;
         }).collect(Collectors.toList());
     }
+    /**
+     * Retrieves a category by id, or throws CategoryNotFoundException
+     * if no category exists with that id.
+     */
+    @Override
+    public CategoryDto getCategoryById(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + id));
+
+        CategoryDto dto = new CategoryDto();
+        dto.setId(category.getId());
+        dto.setName(category.getName());
+        return dto;
+    }
+
+
 }

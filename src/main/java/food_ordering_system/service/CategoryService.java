@@ -16,4 +16,10 @@ public interface CategoryService {
      * @return a list of CategoryDto objects
      */
     List<CategoryDto> getAllCategories();
+    /**
+     * Retrieves a single category by its id.
+     * @param id the category id
+     * @return the matching CategoryDto
+     */
+    CategoryDto getCategoryById(Long id);
 }

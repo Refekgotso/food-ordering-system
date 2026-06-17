@@ -37,4 +37,12 @@ public class CategoryController {
     public List<CategoryDto> getAllCategories() {
         return categoryService.getAllCategories();
     }
+    /**
+     * GET /api/category/{id}
+     * Retrieves a single category by its id.
+     */
+    @GetMapping("/{id}")
+    public CategoryDto getCategoryById(@PathVariable Long id) {
+        return categoryService.getCategoryById(id);
+    }
 }
