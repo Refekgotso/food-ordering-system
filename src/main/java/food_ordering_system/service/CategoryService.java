@@ -30,4 +30,9 @@ public interface CategoryService {
      * @return the created CategoryDto, including its generated id
      */
     CategoryDto addCategory(CategoryDto dto);
+
+    /**
+     * update an existing category
+     */
+    CategoryDto updateCategory(Long id, CategoryDto dto);
 }

@@ -62,4 +62,10 @@ public class CategoryController {
         CategoryDto created = categoryService.addCategory(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
+     /** PUT /api/category/{id} // Updates an existing category and returns the updated version
+    */
+     @PutMapping("/{id}")
+     public ResponseEntity<CategoryDto> updateCategory( @PathVariable Long id, @RequestBody @Valid CategoryDto dto) {
+         CategoryDto updatedCategory = categoryService.updateCategory(id, dto); return ResponseEntity.ok(updatedCategory); }
+
 }
