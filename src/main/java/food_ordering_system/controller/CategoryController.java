@@ -66,6 +66,15 @@ public class CategoryController {
     */
      @PutMapping("/{id}")
      public ResponseEntity<CategoryDto> updateCategory( @PathVariable Long id, @RequestBody @Valid CategoryDto dto) {
-         CategoryDto updatedCategory = categoryService.updateCategory(id, dto); return ResponseEntity.ok(updatedCategory); }
+         CategoryDto updatedCategory = categoryService.updateCategory(id, dto); return ResponseEntity.ok(updatedCategory);
+     }
+    /**DELETE /api/category/{id}
+ Deletes a category and returns status 204 (no content)
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
+        categoryService.deleteCategory(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
