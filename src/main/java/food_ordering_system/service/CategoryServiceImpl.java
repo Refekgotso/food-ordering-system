@@ -57,5 +57,23 @@ public class CategoryServiceImpl implements CategoryService {
         return dto;
     }
 
+    /**
+     * Creates a new category. Maps the incoming DTO to an entity,
+     * saves it, then maps the saved entity back to a DTO
+     * (so the generated id is included in the response).
+     */
+    @Override
+    public CategoryDto addCategory(CategoryDto dto) {
+        Category category = new Category();
+        category.setName(dto.getName());
+
+        Category saved = categoryRepository.save(category);
+
+        CategoryDto result = new CategoryDto();
+        result.setId(saved.getId());
+        result.setName(saved.getName());
+        return result;
+    }
+
 
 }

@@ -16,10 +16,18 @@ public interface CategoryService {
      * @return a list of CategoryDto objects
      */
     List<CategoryDto> getAllCategories();
+
     /**
      * Retrieves a single category by its id.
      * @param id the category id
      * @return the matching CategoryDto
      */
     CategoryDto getCategoryById(Long id);
+
+    /**
+     * Creates a new category in the database.
+     * @param dto the category data to create
+     * @return the created CategoryDto, including its generated id
+     */
+    CategoryDto addCategory(CategoryDto dto);
 }
