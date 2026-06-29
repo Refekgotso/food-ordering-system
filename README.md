@@ -95,11 +95,13 @@ controller, service, repository, entity, dto, config, exception
 - All appearing
 
 ### Endpoints
-| Method | URL                       | Body         |
-  |--------|---------------------------|--------------|
-| POST   | /api/categories           | { "name" }   |
-| GET    | /api/categories           | -            |
-| GET    | /api/categories/{id}      | -            |
-| PUT    | /api/categories/{id}      | { "name" }   |
-| DELETE | /api/categories/{id}      | -            |
+## Endpoints
+
+| Method | URL                    | Body         |
+|--------|------------------------|--------------|
+| POST   | /api/category          | { "name" }   |
+| GET    | /api/category          | -            |
+| GET    | /api/category/{id}     | -            |
+| PUT    | /api/category/{id}     | { "name" }   |
+| DELETE | /api/category/{id}     | -            |
 
