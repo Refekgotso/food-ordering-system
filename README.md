@@ -93,3 +93,13 @@ controller, service, repository, entity, dto, config, exception
 - Created category table with AUTO_INCREMENT
 - Inserted 4 category records
 - All appearing
+
+### Endpoints
+| Method | URL                       | Body         |
+  |--------|---------------------------|--------------|
+| POST   | /api/categories           | { "name" }   |
+| GET    | /api/categories           | -            |
+| GET    | /api/categories/{id}      | -            |
+| PUT    | /api/categories/{id}      | { "name" }   |
+| DELETE | /api/categories/{id}      | -            |
+
