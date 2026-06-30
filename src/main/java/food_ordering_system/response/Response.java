@@ -27,23 +27,25 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Response<T> {
 
-    /**
-     * The HTTP-style status code for this response (e.g. 200, 404, 400).
-     */
     private int statusCode;
-
-    /**
-     * A human-readable message describing the result of the request.
-     */
     private String message;
-
-    /**
-     * The actual data payload returned by the request, if any.
-     */
     private T data;
-
-    /**
-     * The exact date and time this response was generated.
-     */
     private LocalDateTime timestamp;
+
+    public static <T> Response<T> success(String message, T data) {
+        return Response.<T>builder()
+                .statusCode(200)
+                .message(message)
+                .data(data)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    public static <T> Response<T> error(int code, String message) {
+        return Response.<T>builder()
+                .statusCode(code)
+                .message(message)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
 }
