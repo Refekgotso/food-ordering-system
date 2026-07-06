@@ -103,3 +103,39 @@ controller, service, repository, entity, dto, config, exception
 | PUT    | /api/categories/{id}      | { "name" }   |
 | DELETE | /api/categories/{id}      | -            |
 
+## API Response Format
+
+Every endpoint returns a consistent JSON response shape:
+
+```json
+{
+    "statusCode": 200,
+    "message": "Category retrieved",
+    "data": {
+        "id": 1,
+        "name": "Fast Food"
+    },
+    "timestamp": "2026-06-18T08:42:11"
+}
+```
+
+### Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| statusCode | int | HTTP-style status code (200, 201, 404, 400) |
+| message | String | Human-readable description of the result |
+| data | T | The actual payload (absent on error responses) |
+| timestamp | LocalDateTime | Exact date and time the response was generated |
+
+### Error Response Example
+
+```json
+{
+    "error": "Not Found",
+    "message": "Category not found with id: 9999",
+    "timestamp": "2026-06-18T08:42:11",
+    "status": 404
+}
+```
+
