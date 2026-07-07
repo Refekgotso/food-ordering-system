@@ -1,5 +1,6 @@
 package food_ordering_system.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -68,5 +69,39 @@ public class GlobalExceptionHandler {
         body.put("message", errors);
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handles DataIntegrityViolationException, which is thrown when a
+     * database constraint is violated - for example, trying to delete
+     * a Category that still has Menu items referencing it via a
+     * foreign key. Returns 409 Conflict instead of letting the raw
+     * database error leak to the client.
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.CONFLICT.value());
+        body.put("error", "Conflict");
+        body.put("message", "Cannot complete this operation because related data still exists");
+
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
+    /**
+     * Catch-all handler for any exception not covered above.
+     * Returns a generic 500 Internal Server Error instead of exposing
+     * a raw stack trace to the client.
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        body.put("error", "Internal Server Error");
+        body.put("message", "An unexpected error occurred");
+
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
