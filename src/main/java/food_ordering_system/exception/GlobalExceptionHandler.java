@@ -36,6 +36,21 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Handles MenuNotFoundException by returning a 404 Not Found
+     * response with a clear error message and timestamp.
+     */
+    @ExceptionHandler(MenuNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleMenuNotFound(MenuNotFoundException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.NOT_FOUND.value());
+        body.put("error", "Not Found");
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    /**
      * Handles validation failures (@NotBlank, @Size, etc.) by returning
      * a 400 Bad Request response listing which fields failed and why.
      */
