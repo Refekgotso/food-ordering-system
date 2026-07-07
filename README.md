@@ -138,4 +138,68 @@ Every endpoint returns a consistent JSON response shape:
     "status": 404
 }
 ```
+## Menu API
 
+All Menu endpoints are under `/api/menu`.
+
+### Endpoints
+
+| Method | Path             | Description                          | Query Params |
+|--------|------------------|--------------------------------------|---------------|
+| POST   | /api/menu        | Create a new menu item               | -             |
+| GET    | /api/menu        | List menus (filter, search, paginate, sort) | `categoryId`, `search`, `page`, `size`, `sort` |
+| GET    | /api/menu/{id}   | Get a single menu item by id         | -             |
+| PUT    | /api/menu/{id}   | Update a menu item by id             | -             |
+| DELETE | /api/menu/{id}   | Delete a menu item by id             | -             |
+
+### Query Parameters (GET /api/menu)
+
+All parameters are optional and can be combined in any order.
+
+| Param        | Type    | Description                                      | Default |
+|--------------|---------|---------------------------------------------------|---------|
+| `categoryId` | Long    | Filter to a specific category                     | -       |
+| `search`     | String  | Case-insensitive partial match on menu name        | -       |
+| `page`       | Integer | Zero-based page number                             | 0       |
+| `size`       | Integer | Items per page                                     | 10      |
+| `sort`       | String  | Field and direction, e.g. `price,asc`              | -       |
+
+### Example Request
+### Example Response (Page<MenuDto>)
+
+```json
+{
+  "statusCode": 200,
+  "message": "Menus retrieved",
+  "data": {
+    "content": [
+      {
+        "id": 5,
+        "name": "Pepperoni Pizza",
+        "description": "Classic pepperoni",
+        "price": 99.50,
+        "imageUrl": "https://placehold.co/300",
+        "categoryId": 3,
+        "categoryName": "Soft Drinks"
+      }
+    ],
+    "totalElements": 1,
+    "totalPages": 1,
+    "number": 0,
+    "size": 5,
+    "first": true,
+    "last": true,
+    "empty": false
+  },
+  "timestamp": "2026-07-07T11:05:34.602783"
+}
+```
+
+### Error Responses
+
+| Scenario                                   | Status |
+|---------------------------------------------|--------|
+| Category not found (create/update)          | 404    |
+| Menu not found (get/update/delete)           | 404    |
+| Validation failure (missing name, negative price, etc.) | 400    |
+| Deleting a category that still has menus     | 409    |
