@@ -1,5 +1,7 @@
 package food_ordering_system.config;
 
+import food_ordering_system.security.CustomAccessDeniedHandler;
+import food_ordering_system.security.CustomAuthenticationEntryPoint;
 import food_ordering_system.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -34,12 +36,18 @@ import java.util.List;
  * dev origin. The JWT filter runs before Spring's default
  * username/password filter so authentication is resolved from the
  * token before any default filter logic runs.
+ *
+ * Custom entry points ensure 401/403 responses use our standard
+ * Response<T> JSON shape instead of Spring Security's default
+ * HTML error pages.
  */
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -48,6 +56,10 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                )
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints - no token needed
                         .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
