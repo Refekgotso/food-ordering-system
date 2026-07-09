@@ -1,6 +1,9 @@
 package food_ordering_system.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * ApplicationConfig is a configuration class for the application.
@@ -18,8 +21,13 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfig {
 
     /**
-     * Additional configuration beans can be defined here.
-     * For example: password encoders, CORS settings,
-     * or custom bean definitions.
+     * Exposes a BCrypt PasswordEncoder bean that can be injected
+     * anywhere passwords need to be hashed (on registration) or
+     * verified (on login). BCrypt automatically handles salting,
+     * so we never need to manage salts ourselves.
      */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
