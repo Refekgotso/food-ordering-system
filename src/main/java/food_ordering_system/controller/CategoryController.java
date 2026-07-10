@@ -23,7 +23,7 @@ import java.util.List;
  * @RequestMapping defines the base URL for all endpoints
  */
 @RestController
-@RequestMapping("/api/category")
+@RequestMapping("/api/categories")
 public class CategoryController {
 
     /**
@@ -34,7 +34,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     /**
-     * GET /api/category
+     * GET /api/categories
      * Retrieves all categories from the database, wrapped in a
      * standard Response<T> object.
      */
@@ -45,7 +45,7 @@ public class CategoryController {
     }
 
     /**
-     * GET /api/category/{id}
+     * GET /api/categories/{id}
      * Retrieves a single category by its id, wrapped in a
      * standard Response<T> object.
      */
@@ -56,7 +56,7 @@ public class CategoryController {
     }
 
     /**
-     * POST /api/category
+     * POST /api/categories
      * Creates a new category.
      * @Valid triggers Jakarta Bean Validation on the incoming dto
      * (checks @NotBlank and @Size rules defined in CategoryDto).
@@ -70,7 +70,7 @@ public class CategoryController {
     }
 
     /**
-     * PUT /api/category/{id}
+     * PUT /api/categories/{id}
      * Updates an existing category's name.
      * @Valid ensures the new name passes validation rules.
      */
@@ -81,7 +81,7 @@ public class CategoryController {
     }
 
     /**
-     * DELETE /api/category/{id}
+     * DELETE /api/categories/{id}
      * Deletes an existing category.
      */
     @DeleteMapping("/{id}")

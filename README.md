@@ -203,3 +203,57 @@ All parameters are optional and can be combined in any order.
 | Menu not found (get/update/delete)           | 404    |
 | Validation failure (missing name, negative price, etc.) | 400    |
 | Deleting a category that still has menus     | 409    |
+
+## Authentication & Security API (Week 3)
+
+All auth endpoints are under `/api/auth`. Registration and login are
+public; every other endpoint requires a valid JWT unless explicitly
+listed as public below.
+
+### Auth Endpoints
+
+| Method | Path                  | Description                          | Who Can Call It     |
+|--------|-----------------------|---------------------------------------|----------------------|
+| POST   | /api/auth/register    | Register a new user (CUSTOMER role assigned automatically) | Public |
+| POST   | /api/auth/login       | Log in and receive a JWT              | Public               |
+
+### Security Rules Summary
+
+| Access Level        | Rules                                                                 |
+|----------------------|------------------------------------------------------------------------|
+| Public (no token)    | `POST /api/auth/register`, `POST /api/auth/login`, `GET /api/categories/**`, `GET /api/menu/**`, `GET /api/reviews/**` |
+| ADMIN only           | `POST/PUT/DELETE /api/categories/**`, `POST/PUT/DELETE /api/menu/**`   |
+| Any authenticated user | Everything else not listed above                                    |
+
+Additional config:
+- Stateless sessions (no server-side session state — JWT carries all auth info)
+- CSRF disabled (token-based REST API, not browser form submissions)
+- CORS restricted to `http://localhost:5173`
+- Custom `401`/`403` handlers return the same `Response<T>`-style JSON shape as the rest of the API, instead of Spring Security's default error pages
+
+### Promoting a user to ADMIN
+
+New users are always registered with the `CUSTOMER` role only — there
+is no way to self-select `ADMIN` via the API. To promote a user to
+ADMIN, run this directly in MySQL Workbench:
+
+```sql
+-- 1. Confirm role ids
+SELECT * FROM roles;
+
+-- 2. Find the target user's id
+SELECT id, email FROM users WHERE email = 'user@example.com';
+
+-- 3. Link the user to the ADMIN role
+-- (adjust user_id and role_id to match the values from steps 1 and 2)
+INSERT INTO users_roles (user_id, role_id) VALUES (<user_id>, <admin_role_id>);
+```
+
+This adds `ADMIN` as an additional role — the user keeps `CUSTOMER` as
+well, and both authorities are granted on their next login.
+
+### How to authenticate in Postman
+
+1. Log in via `POST /api/auth/login`, then copy the `token` field from the response.
+2. Save it as a Postman environment variable (e.g. `authToken`, or dedicated `adminToken` / `customerToken` variables for testing different roles).
+3. Set the collection's **Authorization** tab to **Bearer Token**, with the token value `{{authToken}}` — individual requests then inherit it automatically instead of needing the token pasted into each one.

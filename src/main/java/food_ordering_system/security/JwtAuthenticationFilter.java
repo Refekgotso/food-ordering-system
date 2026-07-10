@@ -49,14 +49,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         String authHeader = request.getHeader("Authorization");
+        System.out.println(">>> JwtAuthenticationFilter - Authorization header: " + authHeader);
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
+            System.out.println(">>> Extracted token: " + token);
 
-            if (jwtUtils.isTokenValid(token)) {
+            boolean valid = jwtUtils.isTokenValid(token);
+            System.out.println(">>> Token valid? " + valid);
+
+            if (valid) {
                 String email = jwtUtils.extractEmail(token);
+                System.out.println(">>> Extracted email: " + email);
 
                 Optional<User> userOptional = userRepository.findByEmail(email);
+                System.out.println(">>> User found? " + userOptional.isPresent());
 
                 if (userOptional.isPresent()) {
                     User user = userOptional.get();
@@ -66,6 +73,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             .map(SimpleGrantedAuthority::new)
                             .map(GrantedAuthority.class::cast)
                             .toList();
+
+                    System.out.println(">>> Authorities granted: " + authorities);
 
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(user, null, authorities);
